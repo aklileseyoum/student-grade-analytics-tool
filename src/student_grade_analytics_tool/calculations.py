@@ -44,7 +44,11 @@ def grade_distribution(students: list[Student]) -> Counter[str]:
 
 def group_by_major(students: list[Student]) -> dict[str, list[Student]]:
     """Group students by major."""
-    raise NotImplementedError
+    by_major: defaultdict[str, list[Student]] = defaultdict(list)
+    for student in students:
+        by_major[student.major].append(student)
+
+    return dict(by_major)
 
 
 def top_students(students: list[Student], n: int) -> list[Student]:
