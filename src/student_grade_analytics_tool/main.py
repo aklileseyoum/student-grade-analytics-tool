@@ -5,7 +5,10 @@ import sys
 from datetime import UTC, datetime
 from pathlib import Path
 
-from student_grade_analytics_tool.exceptions import GradeAnalyticsError
+from student_grade_analytics_tool.exceptions import (
+    GradeAnalyticsError,
+    MissingPathError,
+)
 from student_grade_analytics_tool.parser import parse_students
 from student_grade_analytics_tool.reader import read_csv_rows
 from student_grade_analytics_tool.report import build_report, write_report
@@ -21,6 +24,8 @@ logger = logging.getLogger(__name__)
 def ask_csv_path() -> Path:
     """Ask for the CSV path; an empty answer uses the default."""
     answer = input(f"Path to the CSV file [{DEFAULT_CSV}]: ").strip()
+    if not answer:
+        raise MissingPathError("No CSV path was given.")
     return Path(answer)
 
 
