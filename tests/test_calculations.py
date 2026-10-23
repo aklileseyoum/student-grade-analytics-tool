@@ -101,3 +101,28 @@ def test_group_by_major_missing_major_raises_key_error(make_student) -> None:
     result = calc.group_by_major([make_student({1: [1]}, major="CS")])
     with pytest.raises(KeyError):
         result["Physics"]
+
+
+def test_top_students_highest_first_limited_to_n(make_student) -> None:
+    a = make_student({1: [90]}, student_id="A")
+    b = make_student({1: [70]}, student_id="B")
+    n = make_student({1: [None]}, student_id="N")
+    d = make_student({1: [80]}, student_id="D")
+    top = calc.top_students([a, b, n, d], 2)
+    assert [s.student_id for s in top] == ["A", "D"]
+
+
+def test_top_students_n_larger_than_students(make_student) -> None:
+    a = make_student({1: [90]}, student_id="A")
+    b = make_student({1: [70]}, student_id="B")
+    n = make_student({1: [None]}, student_id="N")
+    d = make_student({1: [80]}, student_id="D")
+    top = calc.top_students([a, b, n, d], 10)
+    assert [s.student_id for s in top] == ["A", "D", "B"]
+
+
+def test_top_students_ties_keep_original_order(make_student) -> None:
+    t1 = make_student({1: [75]}, student_id="T1")
+    t2 = make_student({1: [75]}, student_id="T2")
+    top = calc.top_students([t1, t2], 2)
+    assert [s.student_id for s in top] == ["T1", "T2"]
