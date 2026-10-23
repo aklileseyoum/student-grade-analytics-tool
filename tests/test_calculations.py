@@ -126,3 +126,15 @@ def test_top_students_ties_keep_original_order(make_student) -> None:
     t2 = make_student({1: [75]}, student_id="T2")
     top = calc.top_students([t1, t2], 2)
     assert [s.student_id for s in top] == ["T1", "T2"]
+
+
+@pytest.mark.parametrize(
+    ("score", "expected"),
+    [(70, 50.0), (50, 0.0), (80, 75.0), (90, 100.0)],
+)
+def test_percentile_rank_percent_strictly_below(score: float, expected: float) -> None:
+    assert calc.percentile_rank(score, [50, 60, 70, 80]) == expected
+
+
+def test_percentile_rank_empty_scores_give_zero() -> None:
+    assert calc.percentile_rank(70, []) == 0.0
