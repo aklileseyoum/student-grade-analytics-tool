@@ -138,3 +138,16 @@ def test_percentile_rank_percent_strictly_below(score: float, expected: float) -
 
 def test_percentile_rank_empty_scores_give_zero() -> None:
     assert calc.percentile_rank(70, []) == 0.0
+
+
+def test_rolling_average_window_slides() -> None:
+    ra = calc.RollingAverage(3)
+    assert ra.add(70) == 70.0
+    assert ra.add(80) == 75.0
+    assert ra.add(90) == 80.0
+    assert ra.add(60) == pytest.approx(76.667, abs=0.001)
+
+
+def test_rolling_average_window_below_one_raises() -> None:
+    with pytest.raises(ValueError):
+        calc.RollingAverage(0)
