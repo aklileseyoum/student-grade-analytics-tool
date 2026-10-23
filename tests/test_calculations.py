@@ -34,3 +34,15 @@ def test_median(scores: list[float], expected: float) -> None:
 
 def test_median_of_empty_list_is_none() -> None:
     assert calc.median([]) is None
+
+
+def test_mode_most_common_score() -> None:
+    assert calc.mode([1, 2, 2, 3]) == 2
+
+
+def test_mode_tie_returns_first_seen() -> None:
+    assert calc.mode([1, 1, 2, 2]) == 1
+
+
+def test_mode_of_empty_list_is_none() -> None:
+    assert calc.mode([]) is None
