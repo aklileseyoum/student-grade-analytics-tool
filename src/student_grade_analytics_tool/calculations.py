@@ -68,7 +68,15 @@ def median(scores: list[float]) -> float | None:
 
 def mode(scores: list[float]) -> float | None:
     """Most common score, or None if there are none."""
-    raise NotImplementedError
+    counted = Counter(scores)
+    score = None
+    freq = 0
+    for k, v in counted.items():
+        if v > freq:
+            score = k
+            freq = v
+
+    return score
 
 
 def percentile_rank(score: float, scores: list[float]) -> float:
