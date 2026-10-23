@@ -40,7 +40,12 @@ def top_students(students: list[Student], n: int) -> list[Student]:
 
 def all_scores(students: list[Student]) -> list[float]:
     """Every graded score of every student."""
-    raise NotImplementedError
+    all_grades = []
+    for student in students:
+        for course in student.courses:
+            if course.grade is not None:
+                all_grades.append(course.grade.score)
+    return all_grades
 
 
 def mean(scores: list[float]) -> float | None:
