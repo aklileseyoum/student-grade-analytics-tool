@@ -9,6 +9,10 @@ class GradeAnalyticsError(Exception):
     """Base class for every error raised by this tool."""
 
 
+class MissingPathError(GradeAnalyticsError):
+    """The user did not provide a path to the CSV file."""
+
+
 class CSVNotFoundError(GradeAnalyticsError):
     """The CSV file does not exist."""
 
