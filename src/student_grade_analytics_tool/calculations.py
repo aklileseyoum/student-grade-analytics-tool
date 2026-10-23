@@ -3,14 +3,22 @@
 Written red-green: each function starts as a stub that raises NotImplementedError.
 """
 
-from collections import Counter
+from collections import Counter, defaultdict
 
 from student_grade_analytics_tool.models import Student
 
 
 def semester_averages(student: Student) -> dict[int, float]:
     """Semester number -> average, in semester order. Empty semesters are left out."""
-    raise NotImplementedError
+    scores = defaultdict(list)
+    for course in student.courses:
+        if course.grade is not None:
+            scores[course.semester].append(course.grade.score)
+
+    avg_score = defaultdict(float)
+    for k, v in sorted(scores.items()):
+        avg_score[k] = sum(v) / len(v)
+    return avg_score
 
 
 def overall_average(student: Student) -> float | None:
