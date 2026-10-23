@@ -86,3 +86,18 @@ def test_grade_distribution_counts_letters_and_ignores_blanks(make_student) -> N
 def test_grade_distribution_boundaries(make_student, score: float, letter: str) -> None:
     student = make_student({1: [score]})
     assert calc.grade_distribution([student]) == {letter: 1}
+
+
+def test_group_by_major_groups_students(make_student) -> None:
+    a = make_student({1: [1]}, student_id="A", major="CS")
+    b = make_student({1: [1]}, student_id="B", major="Math")
+    d = make_student({1: [1]}, student_id="D", major="CS")
+    result = calc.group_by_major([a, b, d])
+    assert set(result) == {"CS", "Math"}
+    assert [s.student_id for s in result["CS"]] == ["A", "D"]
+
+
+def test_group_by_major_missing_major_raises_key_error(make_student) -> None:
+    result = calc.group_by_major([make_student({1: [1]}, major="CS")])
+    with pytest.raises(KeyError):
+        result["Physics"]
