@@ -57,7 +57,13 @@ def mean(scores: list[float]) -> float | None:
 
 def median(scores: list[float]) -> float | None:
     """Median of the scores, or None if there are none."""
-    raise NotImplementedError
+    idx = len(scores) // 2
+    if len(scores) % 2 == 1:
+        sorted_score = sorted(scores)
+        return sorted_score[idx]
+    elif len(scores) % 2 == 0 and len(scores) != 0:
+        return (scores[idx] + scores[idx - 1]) / 2
+    return None
 
 
 def mode(scores: list[float]) -> float | None:
