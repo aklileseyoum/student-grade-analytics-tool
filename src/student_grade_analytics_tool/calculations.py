@@ -33,7 +33,13 @@ def trend(student: Student) -> str:
 
 def grade_distribution(students: list[Student]) -> Counter[str]:
     """Count of letter grades across all graded courses."""
-    raise NotImplementedError
+    grade_counts: Counter[str] = Counter()
+    for student in students:
+        for course in student.courses:
+            if course.grade is not None:
+                grade_counts[course.grade.letter] += 1
+
+    return grade_counts
 
 
 def group_by_major(students: list[Student]) -> dict[str, list[Student]]:
