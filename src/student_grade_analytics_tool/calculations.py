@@ -118,4 +118,13 @@ def mode(scores: list[float]) -> float | None:
 
 def percentile_rank(score: float, scores: list[float]) -> float:
     """Percent of the scores that are strictly below the given score."""
-    raise NotImplementedError
+    idx = 0
+    for each in sorted(scores):
+        if each < score:
+            idx += 1
+        else:
+            return (idx / len(scores)) * 100
+    if idx != 0:
+        return 100
+
+    return 0.0
