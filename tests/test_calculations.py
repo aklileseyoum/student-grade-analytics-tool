@@ -151,3 +151,17 @@ def test_rolling_average_window_slides() -> None:
 def test_rolling_average_window_below_one_raises() -> None:
     with pytest.raises(ValueError):
         calc.RollingAverage(0)
+
+
+@pytest.mark.parametrize(
+    ("semesters", "expected"),
+    [
+        ({1: [60], 2: [70], 3: [80]}, "improving"),
+        ({1: [80], 2: [70], 3: [60]}, "declining"),
+        ({1: [70], 2: [70]}, "stable"),
+        ({1: [70]}, "stable"),
+        ({1: [None], 2: [None]}, "stable"),
+    ],
+)
+def test_trend(make_student, semesters, expected: str) -> None:
+    assert calc.trend(make_student(semesters)) == expected
