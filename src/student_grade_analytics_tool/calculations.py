@@ -15,7 +15,7 @@ def semester_averages(student: Student) -> dict[int, float]:
 
 def overall_average(student: Student) -> float | None:
     """Mean of all graded courses, or None if there are none."""
-    raise NotImplementedError
+    return mean(all_scores([student]))
 
 
 def trend(student: Student) -> str:
