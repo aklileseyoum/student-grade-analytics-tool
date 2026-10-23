@@ -28,7 +28,21 @@ def overall_average(student: Student) -> float | None:
 
 def trend(student: Student) -> str:
     """'improving', 'declining' or 'stable', from the rolling average of semesters."""
-    raise NotImplementedError
+    averages = semester_averages(student)
+    results = []
+    if len(averages) > 0:
+        rolling_avg = RollingAverage(len(averages))
+    for v in averages.values():
+        results.append(rolling_avg.add(v))
+
+    if len(results) >= 2:
+        level = results[-2] - results[-1]
+        if level > 0:
+            return "declining"
+        elif level < 0:
+            return "improving"
+
+    return "stable"
 
 
 def grade_distribution(students: list[Student]) -> Counter[str]:
