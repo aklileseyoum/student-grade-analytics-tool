@@ -53,7 +53,26 @@ def group_by_major(students: list[Student]) -> dict[str, list[Student]]:
 
 def top_students(students: list[Student], n: int) -> list[Student]:
     """The n students with the highest overall average."""
-    raise NotImplementedError
+    avg_all = {}
+    for student in students:
+        summ: float = 0.0
+        count = 0
+        for course in student.courses:
+            if course.grade is not None:
+                summ += course.grade.score
+                count += 1
+        if summ != 0:
+            avg = summ / count
+            avg_all[student] = avg
+
+    students_ranked = list(
+        dict(sorted(avg_all.items(), key=lambda item: item[1], reverse=True))
+    )
+
+    if n < len(students_ranked):
+        return students_ranked[:n]
+
+    return students_ranked
 
 
 def all_scores(students: list[Student]) -> list[float]:
