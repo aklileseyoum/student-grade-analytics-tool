@@ -3,7 +3,7 @@
 Written red-green: each function starts as a stub that raises NotImplementedError.
 """
 
-from collections import Counter, defaultdict
+from collections import Counter, defaultdict, deque
 
 from student_grade_analytics_tool.models import Student
 
@@ -128,3 +128,19 @@ def percentile_rank(score: float, scores: list[float]) -> float:
         return 100
 
     return 0.0
+
+
+class RollingAverage:
+    """Average of the last `window` values."""
+
+    def __init__(self, window: int) -> None:
+        if window <= 0:
+            raise ValueError("The window should be more than 0")
+        self.window = window
+        self.store: deque = deque()
+
+    def add(self, value: float) -> float:
+        if len(self.store) == self.window:
+            self.store.popleft()
+        self.store.append(value)
+        return sum(self.store) / len(self.store)
