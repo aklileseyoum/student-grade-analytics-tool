@@ -46,3 +46,12 @@ def test_mode_tie_returns_first_seen() -> None:
 
 def test_mode_of_empty_list_is_none() -> None:
     assert calc.mode([]) is None
+
+
+def test_overall_average_skips_blank_grades(make_student) -> None:
+    student = make_student({1: [80, None, 70], 2: [90]})
+    assert calc.overall_average(student) == 80.0
+
+
+def test_overall_average_all_blank_gives_none(make_student) -> None:
+    assert calc.overall_average(make_student({1: [None, None]})) is None
