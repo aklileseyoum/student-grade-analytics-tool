@@ -55,3 +55,34 @@ def test_overall_average_skips_blank_grades(make_student) -> None:
 
 def test_overall_average_all_blank_gives_none(make_student) -> None:
     assert calc.overall_average(make_student({1: [None, None]})) is None
+
+
+def test_semester_averages_in_semester_order(make_student) -> None:
+    result = calc.semester_averages(make_student({2: [60, 80], 1: [90, 70]}))
+    assert result == {1: 80.0, 2: 70.0}
+    assert list(result) == [1, 2]
+
+
+def test_semester_averages_leaves_out_empty_semester(make_student) -> None:
+    result = calc.semester_averages(make_student({1: [None, None], 2: [50]}))
+    assert result == {2: 50.0}
+
+
+def test_semester_averages_skips_blank_grades(make_student) -> None:
+    result = calc.semester_averages(make_student({1: [80, None, 70]}))
+    assert result == {1: 75.0}
+
+
+def test_grade_distribution_counts_letters_and_ignores_blanks(make_student) -> None:
+    s1 = make_student({1: [95, 85, None]}, student_id="S1")
+    s2 = make_student({1: [85, 40]}, student_id="S2")
+    assert calc.grade_distribution([s1, s2]) == {"B": 2, "A": 1, "F": 1}
+
+
+@pytest.mark.parametrize(
+    ("score", "letter"),
+    [(90, "A"), (89.9, "B"), (59.9, "F")],
+)
+def test_grade_distribution_boundaries(make_student, score: float, letter: str) -> None:
+    student = make_student({1: [score]})
+    assert calc.grade_distribution([student]) == {letter: 1}
